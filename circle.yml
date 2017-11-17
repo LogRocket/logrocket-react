@@ -29,7 +29,7 @@ test:
 deployment:
   beta:
     tag: /beta-.+/
-    owner: AppHubPlatform
+    owner: LogRocket
     commands:
       - npm run build
       - npm publish --tag beta
