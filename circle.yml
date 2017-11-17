@@ -24,8 +24,7 @@ dependencies:
 test:
   override:
     # - npm run lint
-    - CI=true npm run test:15.4
-    - CI=true npm run test:15
+    - CI=true npm run test:16
 
 deployment:
   beta:
