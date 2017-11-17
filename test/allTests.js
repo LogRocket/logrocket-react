@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import setup from '../index';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 import { mount } from 'enzyme';
 
 setup();
 
-class WithClickHandler extends React.Component {
+class WithClickHandler extends Component {
   componentDidMount() {
     this.refs.button.click();
   }
@@ -27,7 +27,7 @@ const NestedE = ({ children }) => <div>{children}</div>;
 const NestedD = () => <NestedE><NestedC /></NestedE>;
 NestedD.displayName = 'foobar';
 
-class NoClickHandler extends React.Component {
+class NoClickHandler extends Component {
   componentDidMount() {
     this.refs.button.click();
   }
@@ -59,13 +59,13 @@ describe('logrocket-react', () => {
   });
 
   it('should log a click event with the component', () => {
-    ReactDOM.render(<WithClickHandler />, root);
+    render(<WithClickHandler />, root);
     expect(clickEvents).to.have.length(1);
     expect(clickEvents[0].__lrName).to.eql(['WithClickHandler']);
   });
 
   it('should log the full hierarchy of components', () => {
-    ReactDOM.render(<NestedD />, root);
+    render(<NestedD />, root);
     expect(clickEvents).to.have.length(1);
     expect(clickEvents[0].__lrName).to.eql([
       'WithClickHandler', 'NestedA', 'NestedB', 'NestedC', 'foobar',
@@ -73,7 +73,7 @@ describe('logrocket-react', () => {
   });
 
   it('should log when there is no click handler', () => {
-    ReactDOM.render(<NoClickHandler />, root);
+    render(<NoClickHandler />, root);
     expect(clickEvents).to.have.length(1);
     expect(clickEvents[0].__lrName).to.eql(['NoClickHandler']);
   });
