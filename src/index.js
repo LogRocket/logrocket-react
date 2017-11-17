@@ -10,16 +10,16 @@ export default function setupReact() {
           return;
         }
 
-        let currentElement = targetInst._currentElement._owner;
+        let currentElement = targetInst._debugOwner;
 
         const names = [];
         while (currentElement) {
-          const name = currentElement._currentElement.type.displayName ||
-            currentElement._currentElement.type.name;
+          const name = currentElement.type.displayName ||
+            currentElement.type.name;
           if (name) {
             names.push(name);
           }
-          currentElement = currentElement._currentElement._owner;
+          currentElement = currentElement._debugOwner;
         }
 
         nativeEvent.__lrName = names;
