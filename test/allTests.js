@@ -2,7 +2,10 @@ import { expect } from 'chai';
 import setup from '../index';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { mount } from 'enzyme';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 setup();
 
