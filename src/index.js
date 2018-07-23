@@ -6,7 +6,7 @@ export default function setupReact() {
   hub.injection.injectEventPluginsByName({
     ResponderEventPlugin: {
       extractEvents: (topLevelType, targetInst, nativeEvent) => {
-        if (topLevelType !== 'topClick' || !targetInst) {
+        if (topLevelType !== 'click' || !targetInst) {
           return;
         }
 

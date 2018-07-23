@@ -17,7 +17,7 @@
     "build": "babel src --out-dir dist",
     "react:clean": "rimraf node_modules/react node_modules/react-dom",
     "test": "./node_modules/.bin/karma start",
-    "test:16": "npm run react:clean && yarn add react@16 react-dom@16 && npm test"
+    "test:16": "npm run react:clean && yarn add react@16 react-dom@16.4.1 && npm test"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
@@ -61,7 +61,7 @@
     "react-dom": "16.x"
   },
   "dependencies": {
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react": "16",
+    "react-dom": "16.4.1"
   }
 }
