@@ -1,6 +1,6 @@
 {
   "name": "logrocket-react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React library for [LogRocket](https://logrocket.com/).",
   "main": "dist/index.js",
   "author": "Logrocket <support@logrocket.com> (https://logrocket.com/)",
