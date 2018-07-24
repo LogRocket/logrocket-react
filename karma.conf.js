@@ -26,12 +26,6 @@ module.exports = function(config) {
       os: 'OS X',
       os_version: 'Sierra',
     },
-    bs_iphone_7_ios_10: {
-      base: 'BrowserStack',
-      device: 'iPhone 7',
-      os: 'ios',
-      os_version: '10.0',
-    },
     bs_ie_11_windows_10: {
       base: 'BrowserStack',
       browser: 'IE',
