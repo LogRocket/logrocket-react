@@ -1,0 +1,72 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:8
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: export BROWSERSTACK_TUNNEL_IDENTIFIER
+          command: |
+            echo "export BROWSERSTACK_TUNNEL_IDENTIFIER=$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX" >> $BASH_ENV
+      - run:
+          name: browserstack tunnel
+          command: ./bin/BrowserStackLocal-linux-x64 -localIdentifier $BROWSERSTACK_TUNNEL_IDENTIFIER $BROWSERSTACK_ACCESS_KEY
+          background: true
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ checksum "yarn.lock" }}
+            - yarn-cache-
+      - run: yarn install --frozen-lockfile
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: CI=true npm run test:16
+      - run: npm run build
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+      - persist_to_workspace:
+          root: ~/project
+          paths: 
+            - .npmrc
+            - dist
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run: npm publish
+  deploy-beta:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run: npm publish --tag beta
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /release-[0-9]+\.[0-9]+\.[0-9]+/
+            branches:
+              ignore: /.*/
+      - deploy-beta:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /beta-[0-9]+\.[0-9]+\.[0-9]+/
+            branches:
+              ignore: /.*/
