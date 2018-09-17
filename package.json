@@ -1,6 +1,6 @@
 {
   "name": "logrocket-react",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "React library for [LogRocket](https://logrocket.com/).",
   "main": "dist/index.js",
   "author": "Logrocket <support@logrocket.com> (https://logrocket.com/)",
@@ -17,7 +17,7 @@
     "build": "babel src --out-dir dist",
     "react:clean": "rimraf node_modules/react node_modules/react-dom",
     "test": "./node_modules/.bin/karma start",
-    "test:16": "npm run react:clean && yarn add react@16.4.1 react-dom@16.4.1 && npm test"
+    "test:16": "npm run react:clean && npm i react@16.5 react-dom@16.5 --no-save && npm test"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
@@ -57,11 +57,7 @@
     "webpack": "^1.5.1"
   },
   "peerDependencies": {
-    "react": "16.x",
-    "react-dom": "16.x"
-  },
-  "dependencies": {
-    "react": "16.4.1",
-    "react-dom": "16.4.1"
+    "react": "16.5",
+    "react-dom": "16.5"
   }
 }
