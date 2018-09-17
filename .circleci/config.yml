@@ -19,11 +19,11 @@ jobs:
           background: true
       - restore_cache:
           keys:
-            - yarn-cache-{{ checksum "yarn.lock" }}
-            - yarn-cache-
-      - run: yarn install --frozen-lockfile
+            - npm-cache-{{ checksum "package-lock.json" }}
+            - npm-cache-
+      - run: npm install
       - save_cache:
-          key: yarn-cache-{{ checksum "yarn.lock" }}
+          key: npm-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - run: CI=true npm run test:16
@@ -31,7 +31,7 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - persist_to_workspace:
           root: ~/project
-          paths: 
+          paths:
             - .npmrc
             - dist
   deploy:

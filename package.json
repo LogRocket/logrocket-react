@@ -15,8 +15,8 @@
   "scripts": {
     "lint": "eslint src/",
     "build": "babel src --out-dir dist",
-    "react:clean": "rimraf node_modules/react node_modules/react-dom",
-    "test": "./node_modules/.bin/karma start",
+    "react:clean": "node_modules/.bin/rimraf node_modules/react node_modules/react-dom",
+    "test": "node_modules/.bin/karma start",
     "test:16": "npm run react:clean && npm i react@16.5 react-dom@16.5 --no-save && npm test"
   },
   "devDependencies": {
