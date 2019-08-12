@@ -1,8 +1,16 @@
 import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom';
 
 
+let injectEventPluginsByName;
 // from https://github.com/facebook/react/blob/v16.5.1/packages/react-dom/src/client/ReactDOM.js#L750
-const injectEventPluginsByName = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.Events[3];
+const secret = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+if (secret && secret.Events && secret.Events[3]) {
+  injectEventPluginsByName = secret.Events[3];
+} else {
+  injectEventPluginsByName = () => {
+    console.warn('logrocket-react does not work with this version of React');
+  }
+}
 
 export default function setupReact() {
   injectEventPluginsByName({
