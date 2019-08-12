@@ -57,7 +57,7 @@
     "webpack": "^1.5.1"
   },
   "peerDependencies": {
-    "react": "16.5",
-    "react-dom": "16.5"
+    "react": ">=16.5",
+    "react-dom": ">=16.5"
   }
 }
