@@ -71,7 +71,7 @@ describe('logrocket-react', () => {
     render(<NestedD />, root);
     expect(clickEvents).to.have.length(1);
     expect(clickEvents[0].__lrName).to.eql([
-      'WithClickHandler', 'NestedA', 'NestedB', 'NestedC', 'foobar',
+      'WithClickHandler', 'NestedA', 'NestedB', 'NestedC', 'NestedE', 'foobar',
     ]);
   });
 

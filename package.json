@@ -17,10 +17,8 @@
     "build": "babel src --out-dir dist",
     "react:clean": "node_modules/.bin/rimraf node_modules/react node_modules/react-dom",
     "test": "node_modules/.bin/karma start",
-    "test:16.5": "npm run react:clean && npm i react@16.5 react-dom@16.5 --no-save && npm test",
-    "test:16.8": "npm run react:clean && npm i react@16.8 react-dom@16.8 --no-save && npm test",
-    "test:16.9": "npm run react:clean && npm i react@16.9 react-dom@16.9 --no-save && npm test",
-    "test:all": "DEV=true npm run test:16.5 && npm run test:16.8 && npm run test:16.9"
+    "test:16.10": "npm run react:clean && npm i react@16.10 react-dom@16.10 --no-save && npm test",
+    "test:all": "DEV=true npm run test:16.10"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
@@ -60,7 +58,7 @@
     "webpack": "^1.5.1"
   },
   "peerDependencies": {
-    "react": ">=16.5",
-    "react-dom": ">=16.5"
+    "react": ">=16.10",
+    "react-dom": ">=16.10"
   }
 }

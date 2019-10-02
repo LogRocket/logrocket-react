@@ -15,25 +15,27 @@ if (secret && secret.Events && secret.Events[3]) {
 export default function setupReact() {
   injectEventPluginsByName({
     ResponderEventPlugin: {
-      extractEvents: (topLevelType, targetInst, nativeEvent) => {
-        if (topLevelType !== 'click' || !targetInst) {
-          return;
-        }
-
-        let currentElement = targetInst._debugOwner;
-
-        const names = [];
-        while (currentElement) {
-          const name = currentElement.type.displayName ||
-            currentElement.type.name;
-          if (name) {
-            names.push(name);
+      extractEvents: function logRocketReactEventHook(topLevelType, targetInst, fiberNode, nativeEvent) {
+        try {
+          if (topLevelType !== 'click' || !fiberNode) {
+            return;
           }
-          currentElement = currentElement._debugOwner;
-        }
 
-        // eslint-disable-next-line no-param-reassign
-        nativeEvent.__lrName = names;
+          let currentElement = fiberNode;
+
+          const names = [];
+          while (currentElement) {
+            var name = typeof currentElement.elementType === 'function' && currentElement.elementType.displayName;
+            if (name) {
+              names.push(name);
+            }
+            currentElement = currentElement.return;
+          }
+          // eslint-disable-next-line no-param-reassign
+          nativeEvent.__lrName = names;
+        } catch (error) {
+          console.error('logrocket-react caught an error while hooking into React. Please make sure you are using the correct version of logrocket-react for your version of react-dom.')
+        }
       },
     },
   });
