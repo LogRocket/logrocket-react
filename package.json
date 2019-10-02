@@ -1,6 +1,6 @@
 {
   "name": "logrocket-react",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "React library for [LogRocket](https://logrocket.com/).",
   "main": "dist/index.js",
   "author": "Logrocket <support@logrocket.com> (https://logrocket.com/)",
@@ -20,6 +20,7 @@
     "test:16.5": "npm run react:clean && npm i react@16.5 react-dom@16.5 --no-save && npm test",
     "test:16.8": "npm run react:clean && npm i react@16.8 react-dom@16.8 --no-save && npm test",
     "test:16.9": "npm run react:clean && npm i react@16.9 react-dom@16.9 --no-save && npm test",
+    "test:16.10": "npm run react:clean && npm i react@16.10 react-dom@16.10 --no-save && npm test",
     "test:all": "DEV=true npm run test:16.5 && npm run test:16.8 && npm run test:16.9"
   },
   "devDependencies": {

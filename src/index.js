@@ -15,23 +15,21 @@ if (secret && secret.Events && secret.Events[3]) {
 export default function setupReact() {
   injectEventPluginsByName({
     ResponderEventPlugin: {
-      extractEvents: (topLevelType, targetInst, nativeEvent) => {
-        if (topLevelType !== 'click' || !targetInst) {
+      extractEvents: function logRocketReactEventHook(topLevelType, targetInst, fiberNode, nativeEvent) {
+        if (topLevelType !== 'click' || !fiberNode) {
           return;
         }
 
-        let currentElement = targetInst._debugOwner;
+        let currentElement = fiberNode;
 
         const names = [];
         while (currentElement) {
-          const name = currentElement.type.displayName ||
-            currentElement.type.name;
+          var name = typeof currentElement.elementType === 'function' && currentElement.elementType.displayName;
           if (name) {
             names.push(name);
           }
-          currentElement = currentElement._debugOwner;
+          currentElement = currentElement.return;
         }
-
         // eslint-disable-next-line no-param-reassign
         nativeEvent.__lrName = names;
       },
