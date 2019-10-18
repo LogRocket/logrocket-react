@@ -17,7 +17,7 @@ export default function setupReact() {
     ResponderEventPlugin: {
       extractEvents: function logRocketReactEventHook(topLevelType, targetInst, fiberNode, nativeEvent) {
         try {
-          if (topLevelType !== 'click' || !fiberNode) {
+          if (topLevelType !== 'click' || !fiberNode || !nativeEvent) {
             return;
           }
 
