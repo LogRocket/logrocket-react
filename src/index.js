@@ -20,16 +20,16 @@ export default function setupReact() {
           return;
         }
 
-        let currentElement = targetInst._debugOwner;
+        let currentElement = targetInst.return;
 
         const names = [];
-        while (currentElement) {
+        while (currentElement && currentElement.type) {
           const name = currentElement.type.displayName ||
             currentElement.type.name;
           if (name) {
             names.push(name);
           }
-          currentElement = currentElement._debugOwner;
+          currentElement = currentElement.return;
         }
 
         // eslint-disable-next-line no-param-reassign
