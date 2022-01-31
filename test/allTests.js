@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import setup from '../index';
+import setup from '../src/index';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { configure, mount } from 'enzyme';
