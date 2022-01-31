@@ -23,7 +23,9 @@ export default function setupReact() {
         currentElement = currentElement.return;
       }
       event.__lrName = names;
-    } catch (err) {}
+    } catch (err) {
+      console.error('logrocket-react caught an error while hooking into React. Please make sure you are using the correct version of logrocket-react for your version of react-dom.')
+    }
   }
 
   document.body.addEventListener('click', listener, { capture: true, passive: true });
