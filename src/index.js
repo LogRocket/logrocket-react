@@ -1,42 +1,32 @@
 import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom';
 
 
-let injectEventPluginsByName;
-// from https://github.com/facebook/react/blob/v16.5.1/packages/react-dom/src/client/ReactDOM.js#L750
+let getInstanceFromNode;
 const secret = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-if (secret && secret.Events && secret.Events[3]) {
-  injectEventPluginsByName = secret.Events[3];
+if (secret && secret.Events && secret.Events[0]) {
+  getInstanceFromNode = secret.Events[0];
 } else {
-  injectEventPluginsByName = () => {
-    console.warn('logrocket-react does not work with this version of React');
-  }
+  console.warn('logrocket-react does not work with this version of React');
 }
 
 export default function setupReact() {
-  injectEventPluginsByName({
-    ResponderEventPlugin: {
-      extractEvents: function logRocketReactEventHook(topLevelType, targetInst, fiberNode, nativeEvent) {
-        try {
-          if (topLevelType !== 'click' || !fiberNode || !nativeEvent) {
-            return;
-          }
-
-          let currentElement = fiberNode;
-
-          const names = [];
-          while (currentElement) {
-            var name = typeof currentElement.elementType === 'function' && currentElement.elementType.displayName;
-            if (name) {
-              names.push(name);
-            }
-            currentElement = currentElement.return;
-          }
-          // eslint-disable-next-line no-param-reassign
-          nativeEvent.__lrName = names;
-        } catch (error) {
-          console.error('logrocket-react caught an error while hooking into React. Please make sure you are using the correct version of logrocket-react for your version of react-dom.')
+  const listener = event => {
+    try {
+      const fiberNode = getInstanceFromNode(event.target)
+      const names = [];
+      let currentElement = fiberNode;
+      while (currentElement) {
+        var name = typeof currentElement.elementType === 'function' && currentElement.elementType.displayName;
+        if (name) {
+          names.push(name);
         }
-      },
-    },
-  });
+        currentElement = currentElement.return;
+      }
+      event.__lrName = names;
+    } catch (err) {
+      console.error('logrocket-react caught an error while hooking into React. Please make sure you are using the correct version of logrocket-react for your version of react-dom.')
+    }
+  }
+
+  document.body.addEventListener('click', listener, { capture: true, passive: true });
 }
