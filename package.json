@@ -1,6 +1,6 @@
 {
   "name": "logrocket-react",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "React library for [LogRocket](https://logrocket.com/).",
   "main": "dist/index.js",
   "author": "Logrocket <support@logrocket.com> (https://logrocket.com/)",
@@ -62,8 +62,5 @@
     "logrocket": ">=2.0",
     "react": ">=17.0",
     "react-dom": ">=17.0"
-  },
-  "dependencies": {
-    "logrocket": "^2.1.3"
   }
 }
