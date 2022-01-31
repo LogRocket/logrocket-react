@@ -9,6 +9,9 @@ The LogRocket React plugin allows you to search for sessions in which the user c
 
 ## Guide for React versions
 
+### If using React 17
+`npm i --save logrocket-react@5`
+
 ### If using React 16.10
 `npm i --save logrocket-react@4`
 
