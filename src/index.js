@@ -23,7 +23,6 @@ export default function setupReact() {
         currentElement = currentElement.return;
       }
       event.__lrName = names;
-      console.log(names);
     } catch (err) {
       console.error('logrocket-react caught an error while hooking into React. Please make sure you are using the correct version of logrocket-react for your version of react-dom.')
     }
