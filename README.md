@@ -1,6 +1,8 @@
 # LogRocket React plugin
 Optional add-on package for [logrocket](https://www.npmjs.com/package/logrocket).
 
+Please note that this is intended to be used in conjunction with build tooling that automatically adds the `displayName` property to your React components. Without this property existing, our plugin doesn't have any component names to report to LogRocket. You can also manually add them if you want LogRocket to report a different name.
+
 ------
 
 The LogRocket React plugin allows you to search for sessions in which the user clicks a specific component in your app:
