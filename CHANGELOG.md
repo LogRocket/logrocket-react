@@ -1,3 +1,6 @@
+### 6.0.0
+- Supported React 18
+
 ### 3.0.1
 - Added console warning if React version is not compatible
 - Fixed peer dependencies to not warn on react >16.5

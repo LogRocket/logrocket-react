@@ -1,0 +1,9 @@
+{
+  "roots": [
+    "<rootDir>/src/"
+  ],
+  "transform": {
+    "\\.[jt]sx?$": "babel-jest"
+  },
+  "testEnvironment": "jsdom"
+}

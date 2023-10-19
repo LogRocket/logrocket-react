@@ -1,11 +1,20 @@
 {
   "presets": [
-    "babel-preset-es2015",
-    "stage-3",
-    "react"
+    ["@babel/preset-env", {
+      "targets": "> 0.25%, not dead"
+    }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
   ],
-  "plugins": [
-    "add-module-exports",
-    "add-react-displayname"
-  ]
+  "env": {
+    "test": {
+      "plugins": [
+        [
+          "@babel/plugin-transform-modules-commonjs",
+          {
+            "loose": true
+          }
+        ]
+      ]
+    }
+  }
 }
