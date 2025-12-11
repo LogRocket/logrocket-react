@@ -9,14 +9,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run:
-          name: export BROWSERSTACK_TUNNEL_IDENTIFIER
-          command: |
-            echo "export BROWSERSTACK_TUNNEL_IDENTIFIER=$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX" >> $BASH_ENV
-      - run:
-          name: browserstack tunnel
-          command: ./bin/BrowserStackLocal-linux-x64 -localIdentifier $BROWSERSTACK_TUNNEL_IDENTIFIER $BROWSERSTACK_ACCESS_KEY
-          background: true
       - restore_cache:
           keys:
             - npm-cache-{{ checksum "package-lock.json" }}
