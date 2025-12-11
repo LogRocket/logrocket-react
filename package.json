@@ -3,6 +3,7 @@
   "version": "7.0.0",
   "description": "React library for [LogRocket](https://logrocket.com/).",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Logrocket <support@logrocket.com> (https://logrocket.com/)",
   "license": "MIT",
   "repository": {
@@ -14,7 +15,7 @@
   ],
   "scripts": {
     "lint": "eslint src/",
-    "build": "babel src --out-dir dist --ignore **/__tests__/*.js",
+    "build": "babel src --out-dir dist --ignore **/__tests__/*.js && cp src/index.d.ts dist/index.d.ts",
     "react:clean": "rm -rf ./node_modules/react && rm -rf ./node_modules/react-dom",
     "test:19": "npm run react:clean && npm i react@19.2 --no-save && jest --verbose false",
     "test": "DEV=true npm run test:19",
