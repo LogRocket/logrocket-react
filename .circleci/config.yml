@@ -2,21 +2,13 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/node:8
+    - image: cimg/node:lts-browsers
 
 jobs:
   build:
     <<: *defaults
     steps:
       - checkout
-      - run:
-          name: export BROWSERSTACK_TUNNEL_IDENTIFIER
-          command: |
-            echo "export BROWSERSTACK_TUNNEL_IDENTIFIER=$CIRCLE_BUILD_NUM-$CIRCLE_NODE_INDEX" >> $BASH_ENV
-      - run:
-          name: browserstack tunnel
-          command: ./bin/BrowserStackLocal-linux-x64 -localIdentifier $BROWSERSTACK_TUNNEL_IDENTIFIER $BROWSERSTACK_ACCESS_KEY
-          background: true
       - restore_cache:
           keys:
             - npm-cache-{{ checksum "package-lock.json" }}
@@ -26,7 +18,7 @@ jobs:
           key: npm-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - run: CI=true npm run test:all
+      - run: CI=true npm run test:19
       - run: npm run build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - persist_to_workspace:

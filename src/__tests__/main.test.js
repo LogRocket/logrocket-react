@@ -1,21 +1,29 @@
 import setup from '../index';
-import React, { Component } from 'react';
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
+import { Component, createRef } from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 class WithClickHandler extends Component {
+  constructor(props) {
+    super(props);
+    this.buttonRef = createRef();
+  }
+
   componentDidMount() {
-    this.refs.button.click();
+    this.buttonRef.current.click();
   }
 
   render() {
-    return <div ref="button" onClick={() => {}} />;
+    return <div ref={this.buttonRef} onClick={() => {}} />;
   }
 }
 WithClickHandler.displayName = 'WithClickHandler';
 
-const NestedA = () => <div><WithClickHandler /></div>;
+const NestedA = () => (
+  <div>
+    <WithClickHandler />
+  </div>
+);
 NestedA.displayName = 'NestedA';
 const NestedB = () => <NestedA />;
 NestedB.displayName = 'NestedB';
@@ -27,17 +35,26 @@ const NestedC = () => (
 NestedC.displayName = 'NestedC';
 const NestedE = ({ children }) => <div>{children}</div>;
 NestedE.displayName = 'NestedE';
-const NestedD = () => <NestedE><NestedC /></NestedE>;
+const NestedD = () => (
+  <NestedE>
+    <NestedC />
+  </NestedE>
+);
 NestedD.displayName = 'NestedD';
 NestedD.displayName = 'foobar';
 
 class NoClickHandler extends Component {
+  constructor(props) {
+    super(props);
+    this.buttonRef = createRef();
+  }
+
   componentDidMount() {
-    this.refs.button.click();
+    this.buttonRef.current.click();
   }
 
   render() {
-    return <div ref="button" />;
+    return <div ref={this.buttonRef} />;
   }
 }
 NoClickHandler.displayName = 'NoClickHandler';
@@ -48,9 +65,13 @@ describe('logrocket-react', () => {
   beforeAll(() => {
     setup();
 
-    document.addEventListener('click', e => {
-      clickEvents.push(e);
-    }, { capture: true, passive: true });
+    document.addEventListener(
+      'click',
+      (e) => {
+        clickEvents.push(e);
+      },
+      { capture: true, passive: true }
+    );
   });
 
   beforeEach(() => {
@@ -67,7 +88,12 @@ describe('logrocket-react', () => {
     render(<NestedD />);
     expect(clickEvents).toHaveLength(1);
     expect(clickEvents[0].__lrName).toEqual([
-      'WithClickHandler', 'NestedA', 'NestedB', 'NestedC', 'NestedE', 'foobar',
+      'WithClickHandler',
+      'NestedA',
+      'NestedB',
+      'NestedC',
+      'NestedE',
+      'foobar',
     ]);
   });
 
