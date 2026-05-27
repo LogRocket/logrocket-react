@@ -15,7 +15,8 @@ export default function setupReact() {
       while (currentElement) {
         var name =
           typeof currentElement.elementType === 'function' &&
-          currentElement.elementType.displayName;
+          (currentElement.elementType.displayName ||
+            currentElement.elementType.name);
         if (name) {
           names.push(name);
         }
