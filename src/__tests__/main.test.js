@@ -1,5 +1,5 @@
 import setup from '../index';
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
@@ -42,6 +42,21 @@ class NoClickHandler extends Component {
 }
 NoClickHandler.displayName = 'NoClickHandler';
 
+function FunctionComponentWithoutDisplayName(props) {
+  const ref = useCallback((element) => {
+    if (element) element.click();
+  });
+  return <div ref={ref} />;
+}
+
+function FunctionComponentWithDisplayName(props) {
+  const ref = useCallback((element) => {
+    if (element) element.click();
+  });
+  return <div ref={ref} />;
+}
+FunctionComponentWithDisplayName.displayName = 'FCWithDisplayName';
+
 describe('logrocket-react', () => {
   let clickEvents;
 
@@ -75,5 +90,24 @@ describe('logrocket-react', () => {
     render(<NoClickHandler />);
     expect(clickEvents).toHaveLength(1);
     expect(clickEvents[0].__lrName).toEqual(['NoClickHandler']);
+  });
+
+  describe('given a function component', function () {
+    describe('without a display name', function () {
+      it('it reports the function name instead', function () {
+        render(<FunctionComponentWithoutDisplayName />);
+        expect(clickEvents).toHaveLength(1);
+        expect(clickEvents[0].__lrName).toEqual([
+          'FunctionComponentWithoutDisplayName',
+        ]);
+      });
+    });
+    describe('with a display name', function () {
+      it('it reports the function name instead', function () {
+        render(<FunctionComponentWithDisplayName />);
+        expect(clickEvents).toHaveLength(1);
+        expect(clickEvents[0].__lrName).toEqual(['FCWithDisplayName']);
+      });
+    });
   });
 });
