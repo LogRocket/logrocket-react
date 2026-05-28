@@ -41,6 +41,21 @@ class NoClickHandler extends Component {
 }
 
 describe('logrocket-react', () => {
+  function FunctionComponentWithoutDisplayName(props) {
+    const ref = useCallback((element) => {
+      if (element) element.click();
+    });
+    return <div ref={ref} />;
+  }
+
+  function FunctionComponentWithDisplayName(props) {
+    const ref = useCallback((element) => {
+      if (element) element.click();
+    });
+    return <div ref={ref} />;
+  }
+  FunctionComponentWithDisplayName.displayName = 'FCWithDisplayName';
+
   let root;
   let clickEvents;
 
@@ -79,5 +94,24 @@ describe('logrocket-react', () => {
     render(<NoClickHandler />, root);
     expect(clickEvents).to.have.length(1);
     expect(clickEvents[0].__lrName).to.eql(['NoClickHandler']);
+  });
+
+  describe('given a function component', function () {
+    describe('without a display name', function () {
+      it('it reports the function name instead', function () {
+        render(<FunctionComponentWithoutDisplayName />);
+        expect(clickEvents).toHaveLength(1);
+        expect(clickEvents[0].__lrName).toEqual([
+          'FunctionComponentWithoutDisplayName',
+        ]);
+      });
+    });
+    describe('with a display name', function () {
+      it('it reports the function name instead', function () {
+        render(<FunctionComponentWithDisplayName />);
+        expect(clickEvents).toHaveLength(1);
+        expect(clickEvents[0].__lrName).toEqual(['FCWithDisplayName']);
+      });
+    });
   });
 });
