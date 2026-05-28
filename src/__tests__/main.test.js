@@ -1,5 +1,5 @@
 import setup from '../index';
-import { Component, createRef } from 'react';
+import { Component, createRef, useCallback } from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
