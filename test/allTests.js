@@ -9,15 +9,35 @@ configure({ adapter: new Adapter() });
 
 setup();
 
-class WithClickHandler extends Component {
-  componentDidMount() {
-    this.refs.button.click();
+function makeClassComponent({ addClickHandler, displayName }) {
+  const onClick = addClickHandler ? () => {} : undefined;
+
+  class GeneratedComponent extends Component {
+    static displayName = displayName;
+    constructor(props) {
+      super(props);
+      this.buttonRef = createRef();
+    }
+
+    componentDidMount() {
+      this.buttonRef.current.click();
+    }
+
+    render() {
+      return <div ref={this.buttonRef} onClick={onClick} />;
+    }
   }
 
-  render() {
-    return <div ref="button" onClick={() => {}} />;
-  }
+  return GeneratedComponent;
 }
+const WithClickHandler = makeClassComponent({
+  addClickHandler: true,
+  displayName: 'WithClickHandler',
+});
+const NoClickHandler = makeClassComponent({
+  addClickHandler: false,
+  displayName: 'NoClickHandler',
+});
 
 const NestedA = () => <div><WithClickHandler /></div>;
 const NestedB = () => <NestedA />;
@@ -29,16 +49,6 @@ const NestedC = () => (
 const NestedE = ({ children }) => <div>{children}</div>;
 const NestedD = () => <NestedE><NestedC /></NestedE>;
 NestedD.displayName = 'foobar';
-
-class NoClickHandler extends Component {
-  componentDidMount() {
-    this.refs.button.click();
-  }
-
-  render() {
-    return <div ref="button" />;
-  }
-}
 
 describe('logrocket-react', () => {
   function FunctionComponentWithoutDisplayName(props) {
