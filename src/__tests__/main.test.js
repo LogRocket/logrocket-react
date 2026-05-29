@@ -25,6 +25,31 @@ function makeClassComponent({ addClickHandler, displayName }) {
 
   return GeneratedComponent;
 }
+
+function clickableDiv(props) {
+  const ref = useCallback((element) => {
+    if (element) element.click();
+  });
+  return <div {...props} ref={ref} />;
+}
+
+function makeFunctionComponent( name, displayName ) {
+  // we can get the function to use the provided name by mounting it onto an
+  // object first
+  const mountedComponent = {
+    [name](props) {
+      return clickableDiv(props);
+    },
+  };
+  const GeneratedComponent = mountedComponent[name];
+
+  if (displayName) {
+    GeneratedComponent.displayName = displayName;
+  }
+
+  return GeneratedComponent;
+}
+
 const WithClickHandler = makeClassComponent({
   addClickHandler: true,
   displayName: 'WithClickHandler',
@@ -50,20 +75,15 @@ const NestedD = () => <NestedE><NestedC /></NestedE>;
 NestedD.displayName = 'NestedD';
 NestedD.displayName = 'foobar';
 
-function FunctionComponentWithoutDisplayName(props) {
-  const ref = useCallback((element) => {
-    if (element) element.click();
-  });
-  return <div ref={ref} />;
-}
+const FunctionComponentWithoutDisplayName = makeFunctionComponent(
+  'FunctionComponentWithoutDisplayName',
+);
 
-function FunctionComponentWithDisplayName(props) {
-  const ref = useCallback((element) => {
-    if (element) element.click();
-  });
-  return <div ref={ref} />;
-}
-FunctionComponentWithDisplayName.displayName = 'FCWithDisplayName';
+// specify both name and displayName here so that we can validate our
+// preference for the latter
+const FunctionComponentWithDisplayName = makeFunctionComponent(
+  'FunctionComponentWithDisplayName', 'FCWithDisplayName'
+);
 
 describe('logrocket-react', () => {
   let clickEvents;
@@ -111,7 +131,7 @@ describe('logrocket-react', () => {
       });
     });
     describe('with a display name', function () {
-      it('it reports the function name instead', function () {
+      it('it reports the display name', function () {
         render(<FunctionComponentWithDisplayName />);
         expect(clickEvents).toHaveLength(1);
         expect(clickEvents[0].__lrName).toEqual(['FCWithDisplayName']);
