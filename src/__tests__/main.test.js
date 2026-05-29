@@ -3,21 +3,35 @@ import { Component, createRef, useCallback } from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-class WithClickHandler extends Component {
-  constructor(props) {
-    super(props);
-    this.buttonRef = createRef();
+function makeClassComponent({ addClickHandler, displayName }) {
+  const onClick = addClickHandler ? () => {} : undefined;
+
+  class GeneratedComponent extends Component {
+    static displayName = displayName;
+    constructor(props) {
+      super(props);
+      this.buttonRef = createRef();
+    }
+
+    componentDidMount() {
+      this.buttonRef.current.click();
+    }
+
+    render() {
+      return <div ref={this.buttonRef} onClick={onClick} />;
+    }
   }
 
-  componentDidMount() {
-    this.buttonRef.current.click();
-  }
-
-  render() {
-    return <div ref={this.buttonRef} onClick={() => {}} />;
-  }
+  return GeneratedComponent;
 }
-WithClickHandler.displayName = 'WithClickHandler';
+const WithClickHandler = makeClassComponent({
+  addClickHandler: true,
+  displayName: 'WithClickHandler',
+});
+const NoClickHandler = makeClassComponent({
+  addClickHandler: false,
+  displayName: 'NoClickHandler',
+});
 
 const NestedA = () => (
   <div>
@@ -42,22 +56,6 @@ const NestedD = () => (
 );
 NestedD.displayName = 'NestedD';
 NestedD.displayName = 'foobar';
-
-class NoClickHandler extends Component {
-  constructor(props) {
-    super(props);
-    this.buttonRef = createRef();
-  }
-
-  componentDidMount() {
-    this.buttonRef.current.click();
-  }
-
-  render() {
-    return <div ref={this.buttonRef} />;
-  }
-}
-NoClickHandler.displayName = 'NoClickHandler';
 
 describe('logrocket-react', () => {
 function FunctionComponentWithoutDisplayName(props) {
