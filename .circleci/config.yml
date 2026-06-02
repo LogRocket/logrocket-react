@@ -7,6 +7,9 @@ defaults: &defaults
 jobs:
   build:
     <<: *defaults
+    matrix:
+      parameters:
+        react: ['17', '18', '19']
     steps:
       - checkout
       - restore_cache:
@@ -18,7 +21,7 @@ jobs:
           key: npm-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - run: CI=true npm run test:19
+      - run: CI=true npm run test:<<parameters.react>>
       - run: npm run build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - persist_to_workspace:

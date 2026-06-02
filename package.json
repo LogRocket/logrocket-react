@@ -16,9 +16,12 @@
   "scripts": {
     "lint": "eslint src/",
     "build": "babel src --out-dir dist --ignore **/__tests__/*.js && cp src/index.d.ts dist/index.d.ts",
-    "react:clean": "rm -rf ./node_modules/react && rm -rf ./node_modules/react-dom",
-    "test:19": "npm run react:clean && npm i react@19.2.3 react-dom@19.2.3 --no-save && jest --verbose false",
-    "test": "DEV=true npm run test:19",
+    "react:clean": "rm -rf ./node_modules/react && rm -rf ./node_modules/react-dom && rm -rf ./node_modules/@testing-library/react",
+    "test:17": "npm run react:clean && npm i react@17 react-dom@17 @testing-library/react@12 --no-save && jest --verbose false",
+    "test:18": "npm run react:clean && npm i react@18 react-dom@18 @testing-library/react@16 --no-save && jest --verbose false",
+    "test:19": "npm run react:clean && npm i react@19 react-dom@19 @testing-library/react@16 --no-save && jest --verbose false",
+    "test:all": "npm run test:17 && npm run test:18 && npm run test:19",
+    "test": "DEV=true npm run test:all",
     "prepublish": "npm run build"
   },
   "devDependencies": {
@@ -37,6 +40,7 @@
   },
   "peerDependencies": {
     "logrocket": ">=2.0",
-    "react": ">=19"
+    "react": "^17 || ^18 || ^19",
+    "react-dom": "^17 || ^18 || ^19"
   }
 }
