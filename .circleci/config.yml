@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/node:20
+    - image: cimg/node:lts-browsers
 
 jobs:
   build:
