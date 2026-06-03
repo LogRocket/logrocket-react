@@ -18,7 +18,12 @@ function makeClassComponent({ addClickHandler, displayName }) {
     }
 
     render() {
-      return <div ref={this.buttonRef} onClick={onClick} />;
+      return (
+        <div
+          ref={this.buttonRef}
+          onClick={onClick}
+        />
+      );
     }
   }
 
@@ -26,13 +31,18 @@ function makeClassComponent({ addClickHandler, displayName }) {
 }
 
 function clickableDiv(props) {
-  const ref = useCallback((element) => {
+  const ref = useCallback(element => {
     if (element) element.click();
   });
-  return <div {...props} ref={ref} />;
+  return (
+    <div
+      {...props}
+      ref={ref}
+    />
+  );
 }
 
-function makeFunctionComponent( name, displayName ) {
+function makeFunctionComponent(name, displayName) {
   // we can get the function to use the provided name by mounting it onto an
   // object first
   const mountedComponent = {
@@ -82,15 +92,11 @@ const NestedD = () => (
 NestedD.displayName = 'NestedD';
 NestedD.displayName = 'foobar';
 
-const FunctionComponentWithoutDisplayName = makeFunctionComponent(
-  'FunctionComponentWithoutDisplayName',
-);
+const FunctionComponentWithoutDisplayName = makeFunctionComponent('FunctionComponentWithoutDisplayName');
 
 // specify both name and displayName here so that we can validate our
 // preference for the latter
-const FunctionComponentWithDisplayName = makeFunctionComponent(
-  'FunctionComponentWithDisplayName', 'FCWithDisplayName'
-);
+const FunctionComponentWithDisplayName = makeFunctionComponent('FunctionComponentWithDisplayName', 'FCWithDisplayName');
 
 describe('logrocket-react', () => {
   let clickEvents;
@@ -100,7 +106,7 @@ describe('logrocket-react', () => {
 
     document.addEventListener(
       'click',
-      (e) => {
+      e => {
         clickEvents.push(e);
       },
       { capture: true, passive: true }
@@ -120,14 +126,7 @@ describe('logrocket-react', () => {
   it('should log the full hierarchy of components', () => {
     render(<NestedD />);
     expect(clickEvents).toHaveLength(1);
-    expect(clickEvents[0].__lrName).toEqual([
-      'WithClickHandler',
-      'NestedA',
-      'NestedB',
-      'NestedC',
-      'NestedE',
-      'foobar',
-    ]);
+    expect(clickEvents[0].__lrName).toEqual(['WithClickHandler', 'NestedA', 'NestedB', 'NestedC', 'NestedE', 'foobar']);
   });
 
   it('should log when there is no click handler', () => {
@@ -141,9 +140,7 @@ describe('logrocket-react', () => {
       it('it reports the function name instead', function () {
         render(<FunctionComponentWithoutDisplayName />);
         expect(clickEvents).toHaveLength(1);
-        expect(clickEvents[0].__lrName).toEqual([
-          'FunctionComponentWithoutDisplayName',
-        ]);
+        expect(clickEvents[0].__lrName).toEqual(['FunctionComponentWithoutDisplayName']);
       });
     });
     describe('with a display name', function () {
