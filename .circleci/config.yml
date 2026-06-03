@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 defaults: &defaults
   docker:
@@ -8,7 +8,11 @@ jobs:
   build:
     <<: *defaults
     parameters:
-      react: ['17', '18', '19']
+      react:
+        description: 'React Version'
+        default: '19'
+        type: 'string'
+        enum: ['17', '18', '19']
     steps:
       - checkout
       - restore_cache:
@@ -20,7 +24,7 @@ jobs:
           key: npm-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - run: CI=true npm run test:{{ parameters.react }}
+      - run: CI=true npm run test:<< parameters.react >>
       - run: npm run build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - persist_to_workspace:
@@ -44,10 +48,12 @@ jobs:
       - run: npm publish --tag beta
 
 workflows:
-  version: 2
   build-deploy:
     jobs:
       - build:
+          matrix:
+            parameters:
+              react: ['17', '18', '19']
           filters:
             tags:
               only: /.*/
